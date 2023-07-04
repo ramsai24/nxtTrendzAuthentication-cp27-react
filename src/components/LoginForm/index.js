@@ -3,7 +3,14 @@ import {Component} from 'react'
 import './index.css'
 
 class LoginForm extends Component {
-  state = {username: '', password: ''}
+  state = {
+    username: '',
+    password: '',
+    errormsg: false,
+    responseErrormsgUsername: '',
+    responseErrormsgPassword: '',
+    responseErrormsgUsernameAndPassword: '',
+  }
 
   submitLogin = async event => {
     event.preventDefault()
@@ -20,6 +27,40 @@ class LoginForm extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
     console.log(data)
+
+    const erros = {
+      ermsg: data.error_msg,
+    }
+
+    if (response.ok === true) {
+      const {history} = this.props
+      history.replace('/')
+    } else {
+      const {ermsg} = erros
+
+      if (ermsg.includes("didn't match")) {
+        this.setState({
+          errormsg: true,
+          responseErrormsgUsernameAndPassword: ermsg,
+          username: '',
+          password: '',
+        })
+      } else if (ermsg.includes('username')) {
+        this.setState({
+          errormsg: true,
+          responseErrormsgUsername: ermsg,
+          username: '',
+          password: '',
+        })
+      } else if (ermsg.includes('password')) {
+        this.setState({
+          errormsg: true,
+          responseErrormsgPassword: ermsg,
+          username: '',
+          password: '',
+        })
+      }
+    }
   }
 
   onPassWord = event => {
@@ -76,6 +117,12 @@ class LoginForm extends Component {
   )
 
   render() {
+    const {
+      errormsg,
+      responseErrormsgUsername,
+      responseErrormsgPassword,
+      responseErrormsgUsernameAndPassword,
+    } = this.state
     return (
       <div className="login-container">
         <img
@@ -91,10 +138,14 @@ class LoginForm extends Component {
             className="logo-img"
           />
           <div>{this.userName()}</div>
+          <p>{errormsg ? `${responseErrormsgUsername}` : ''}</p>
           <div>{this.passWord()}</div>
+          <p>{errormsg ? `${responseErrormsgPassword}` : ''}</p>
+
           <button type="submit" className="login-button">
             Login
           </button>
+          <p>{errormsg ? `*${responseErrormsgUsernameAndPassword}` : ''}</p>
         </form>
       </div>
     )

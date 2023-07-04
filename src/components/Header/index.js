@@ -9,7 +9,7 @@ const Header = () => (
     />
     <ul className="nav-items">
       <li>Home</li>
-      <li>Product</li>
+      <li>Products</li>
       <li>Cart</li>
       <button type="button">Logout</button>
     </ul>
