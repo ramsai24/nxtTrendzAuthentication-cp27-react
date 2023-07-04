@@ -3,7 +3,7 @@ import {Component} from 'react'
 import './index.css'
 
 class LoginForm extends Component {
-  state = {username: '', password: ''}
+  state = {username: '', password: '', errormsg: false}
 
   submitLogin = async event => {
     event.preventDefault()
@@ -12,6 +12,7 @@ class LoginForm extends Component {
     const userDetails = {username, password}
 
     const url = 'https://apis.ccbp.in/login'
+    //  'https://apis.ccbp.in/login'
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
@@ -20,79 +21,87 @@ class LoginForm extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
     console.log(data)
+
+    if (response.ok === true) {
+      const {history} = this.props
+      history.push('/')
+    } else {
+      this.setState({errormsg: true})
+    }
   }
 
   onPassWord = event => {
+    console.log(event.target.value)
     this.setState({password: event.target.value})
   }
 
-  passWord = () => {
-    // const {password} = this.state
-    // return (
-    //   <div className="inputEl-container">
-    //     <label htmlFor="passwordLabel">PASSWORD</label>
-    //     <input
-    //       id="passwordLabel"
-    //       type="password"
-    //       placeholder="Password"
-    //       value={password}
-    //       onChange={this.onPassWord}
-    //     />
-    //   </div>
-    // )
-
+  psWord = () => {
     const {password} = this.state
     return (
-      <>
-        <label className="input-label" htmlFor="password">
-          PASSWORD
-        </label>
+      <div className="inputEl-container">
+        <label htmlFor="passwordLabel">PASSWORD</label>
         <input
+          id="passwordLabel"
           type="password"
-          id="password"
-          className="password-input-filed"
+          placeholder="Password"
           value={password}
-          onChange={this.onChangePassword}
+          onChange={this.onPassWord}
         />
-      </>
+      </div>
     )
+
+    // const {password} = this.state
+    // return (
+    //   <>
+    //     <label className="input-label" htmlFor="password">
+    //       PASSWORD
+    //     </label>
+    //     <input
+    //       type="password"
+    //       id="password"
+    //       className="password-input-filed"
+    //       value={password}
+    //       onChange={this.onChangePassword}
+    //     />
+    //   </>
+    // )
   }
 
-  onUserName = event => {
+  onUsername = event => {
     this.setState({username: event.target.value})
   }
 
   userName = () => {
-    // const {username} = this.state
-    // return (
-    //   <div className="inputEl-container">
-    //     <label htmlFor="usernameLable">USERNAME</label>
-    //     <input
-    //       id="usernameLable"
-    //       type="text"
-    //       placeholder="Username"
-    //       value={username}
-    //       onChange={this.onUsername}
-    //       //
-    //     />
-    //   </div>
-    // )
-
     const {username} = this.state
     return (
-      <>
-        <label className="input-label" htmlFor="username">
-          USERNAME
-        </label>
+      <div className="inputEl-container">
+        <label htmlFor="usernameLable">USERNAME</label>
         <input
+          id="usernameLable"
           type="text"
-          id="username"
-          className="username-input-filed"
+          placeholder="Username"
           value={username}
-          onChange={this.onChangeUsername}
+          onChange={this.onUsername}
+          //
         />
-      </>
+      </div>
     )
+
+    // const {username} = this.state
+    // return (
+    //   <>
+    //     <label className="input-label" htmlFor="username">
+    //       USERNAME
+    //     </label>
+    //     <input
+    //       type="text"
+    //       id="username"
+    //       className="username-input-filed"
+    //       value={username}
+    //       onChange={this.onChangeUsername}
+    //     />
+    //   </>
+    // )
   }
 
   loginForm = () => (
@@ -103,11 +112,13 @@ class LoginForm extends Component {
         className="logo-img"
       />
       <div>{this.userName()}</div>
-      <div>{this.passWord()}</div>
+      <div>{this.psWord()}</div>
     </div>
   )
 
   render() {
+    const {errormsg} = this.state
+    console.log(this.state)
     return (
       <div className="login-container">
         <img
@@ -123,10 +134,11 @@ class LoginForm extends Component {
             className="logo-img"
           />
           <div>{this.userName()}</div>
-          <div>{this.passWord()}</div>
+          <div>{this.psWord()}</div>
           <button type="submit" className="login-button">
             Login
           </button>
+          <p>{errormsg ? "*Usernamae and password didn't match" : ''}</p>
         </form>
       </div>
     )
