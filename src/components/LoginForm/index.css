@@ -1,1 +1,22 @@
 /* Write your CSS code here */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid blue;
+  height: 100vh;
+}
+
+.login-img {
+  height: 450px;
+  width: 450px;
+}
+
+.logo-img {
+  width: 150px;
+}
+
+.inputEl-container {
+  display: flex;
+  flex-direction: column;
+}

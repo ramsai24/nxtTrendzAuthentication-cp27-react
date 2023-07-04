@@ -1,1 +1,13 @@
 /* Write your CSS code here */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  width: 30%;
+}
