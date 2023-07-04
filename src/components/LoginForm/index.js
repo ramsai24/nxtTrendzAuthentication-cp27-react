@@ -56,7 +56,7 @@ class LoginForm extends Component {
           type="text"
           placeholder="Username"
           value={username}
-          onChange={this.onUsername}
+          onChange={this.onUserName}
           //
         />
       </div>
