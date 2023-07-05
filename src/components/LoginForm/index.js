@@ -7,8 +7,7 @@ class LoginForm extends Component {
     username: '',
     password: '',
     errormsg: false,
-    responseErrormsgUsername: '',
-    responseErrormsgPassword: '',
+
     responseErrormsgUsernameAndPassword: '',
   }
 
@@ -31,35 +30,40 @@ class LoginForm extends Component {
     const erros = {
       ermsg: data.error_msg,
     }
+    const {ermsg} = erros
+    if (username === '' && password === '') {
+      this.setState({
+        errormsg: true,
+        responseErrormsgUsernameAndPassword: ermsg,
+        username: '',
+        password: '',
+      })
+    } else if (username !== '' && password === '') {
+      this.setState({
+        errormsg: true,
+        responseErrormsgUsernameAndPassword: ermsg,
+        username: '',
+        password: '',
+      })
+    } else if (username === '' && password !== '') {
+      this.setState({
+        errormsg: true,
+        responseErrormsgUsernameAndPassword: ermsg,
+        username: '',
+        password: '',
+      })
+    }
 
     if (response.ok === true) {
       const {history} = this.props
       history.replace('/')
     } else {
-      const {ermsg} = erros
-
-      if (ermsg.includes("didn't match")) {
-        this.setState({
-          errormsg: true,
-          responseErrormsgUsernameAndPassword: ermsg,
-          username: '',
-          password: '',
-        })
-      } else if (ermsg.includes('username')) {
-        this.setState({
-          errormsg: true,
-          responseErrormsgUsername: ermsg,
-          username: '',
-          password: '',
-        })
-      } else if (ermsg.includes('password')) {
-        this.setState({
-          errormsg: true,
-          responseErrormsgPassword: ermsg,
-          username: '',
-          password: '',
-        })
-      }
+      this.setState({
+        errormsg: true,
+        responseErrormsgUsernameAndPassword: ermsg,
+        username: '',
+        password: '',
+      })
     }
   }
 
@@ -119,8 +123,7 @@ class LoginForm extends Component {
   render() {
     const {
       errormsg,
-      responseErrormsgUsername,
-      responseErrormsgPassword,
+
       responseErrormsgUsernameAndPassword,
     } = this.state
     return (
@@ -138,9 +141,8 @@ class LoginForm extends Component {
             className="logo-img"
           />
           <div>{this.userName()}</div>
-          <p>{errormsg ? `${responseErrormsgUsername}` : ''}</p>
+          {/* <p>{errormsg ? `${responseErrormsgUsername}` : ''}</p> */}
           <div>{this.passWord()}</div>
-          <p>{errormsg ? `${responseErrormsgPassword}` : ''}</p>
 
           <button type="submit" className="login-button">
             Login
